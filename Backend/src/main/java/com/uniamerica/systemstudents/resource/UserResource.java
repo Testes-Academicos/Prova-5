@@ -4,43 +4,45 @@ package com.uniamerica.systemstudents.resource;
 import com.uniamerica.systemstudents.entity.User;
 import com.uniamerica.systemstudents.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
-@CrossOrigin
+@RequestMapping("/api/v1")
+@CrossOrigin("*")
 public class UserResource {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository eRepo;
 
-    @GetMapping("/all")
-    public List<User> GetUsers() {
-        return userRepository.findAll();
+    @GetMapping("/contactos")
+    public List<User> getAllUsers() {
+        return eRepo.findAll();
     }
-    @GetMapping("/{id}")
-    public User GetUser(@PathVariable Long id) {
-        return userRepository.findById(id).orElse(null);
+
+    @GetMapping("/contactos/{id}")
+    public User getUserById(@PathVariable Long id) {
+        return eRepo.findById(id).get();
+
     }
-    @PostMapping("/created")
-    public User PostUser(@RequestBody User user) {
-        return userRepository.save(user);
+
+    @PostMapping("/contactos")
+    public User saveUserDetails(@RequestBody User user) {
+        return eRepo.save(user);
     }
-    @PutMapping("/updated")
-    public User PutUser(@RequestBody User user) {
-        User oldUser = userRepository.findById(user.getId()).orElse(null);
-        oldUser.setName(user.getName());
-        oldUser.setEmail(user.getEmail());
-        oldUser.setPassword(user.getPassword());
-        oldUser.setTelefone(user.getTelefone());
-        return userRepository.save(oldUser);
+
+    @PutMapping("/contactos")
+    public User updateUser(@RequestBody User user) {
+        return eRepo.save(user);
     }
-    @DeleteMapping("/{id}")
-    public Long DeleteUser(@PathVariable Long id) {
-        userRepository.deleteById(id);
-        return id;
+
+    @DeleteMapping("/contactos/{id}")
+    public ResponseEntity<HttpStatus> deleteUserById(@PathVariable Long id) {
+        eRepo.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
