@@ -33,15 +33,15 @@ class ContactoForm extends React.Component {
     id: "",
     contacto: {
       id: "",
-      nome: "",
-      email: "",
+      nome: "liocroons",
+      email: "liocroons01@prova.com",
       telefone: "",
     },
   };
   componentDidMount() {
     if (this.state.id !== undefined) {
       axios
-        .get(`http://localhost:8080/contactos/${this.state.id}`, {
+        .get(`http://localhost:8080/contatos/${this.state.id}`, {
           responseType: "json",
         })
         .then((response) => {
@@ -61,7 +61,7 @@ class ContactoForm extends React.Component {
   }
 
   salvar() {
-    const apiUrl = `http://localhost:8080/contactos`;
+    const apiUrl = `http://localhost:8080/contatos/`;
     fetch(apiUrl, {
       method: "POST",
       headers: {
@@ -77,7 +77,7 @@ class ContactoForm extends React.Component {
   }
 
   editar() {
-    const apiUrl = `http://localhost:8080/contactos/${this.state.contacto.id}`;
+    const apiUrl = `http://localhost:8080/contatos/${this.state.contacto.id}`;
     fetch(apiUrl, {
       method: "PUT",
       headers: {
@@ -94,7 +94,7 @@ class ContactoForm extends React.Component {
 
   render() {
     const button = [];
-    if (this.state.isbn == undefined) {
+    if (this.state.contacto) {
       button.push(
         <button
           id="btn"
@@ -121,7 +121,7 @@ class ContactoForm extends React.Component {
     }
 
     return (
-      <div className="form-conatcto">
+      <div className="form-contacto">
         <h2>Cadastro de contacto</h2>
         <LabelInput
           label="NOME:"
@@ -146,5 +146,7 @@ class ContactoForm extends React.Component {
     );
   }
 }
+
+
 
 export default withRouter(ContactoForm);

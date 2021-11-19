@@ -15,7 +15,7 @@ class Contactos extends React.Component {
 
   componentDidMount() {
     axios
-      .get(`http://localhost:8080/contactos`, {
+      .get(`http://localhost:8080/contatos/`, {
         responseType: "json",
       })
       .then((response) => {
@@ -25,10 +25,12 @@ class Contactos extends React.Component {
       });
   }
 
-  editar() {}
+  editar() {
+    
+  }
 
   excluir(contacto) {
-    const apiUrl = `http://localhost:8080/contactos/${contacto.id}`;
+    const apiUrl = `http://localhost:8080/contatos/${contacto.id}`;
     fetch(apiUrl, {
       method: "DELETE",
       headers: {
@@ -64,7 +66,7 @@ class Contactos extends React.Component {
           <td>
             <div id="td-buttons">
               <Link
-                to={{ pathname: "/cadastrar/:id", id: lista[i].id }}
+                to={{ pathname: "/editar/"+  lista[i].id }}
                 className="link"
               >
                 Editar
@@ -92,7 +94,7 @@ class Contactos extends React.Component {
 
     return (
       <div>
-        <h2>Livros</h2>
+        <h2>Contactos</h2>
         <table className="table table-striped">
           <thead>
             <tr>{camposTabela}</tr>
