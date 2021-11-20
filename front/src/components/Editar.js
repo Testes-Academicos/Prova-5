@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { withRouter } from "react-router";
+import { withRouter, useParams } from "react-router";
 
 
 function LabelInput(props) {
@@ -21,7 +21,9 @@ function LabelInput(props) {
   );
 }
 
-class ContactoForm extends React.Component {
+class Editar extends React.Component {
+
+    
   constructor(props) {
     super(props);
     this.state = {
@@ -29,6 +31,7 @@ class ContactoForm extends React.Component {
       contacto: {},
     };
   }
+
 
   state = {
     id: "",
@@ -40,7 +43,7 @@ class ContactoForm extends React.Component {
     },
   };
 
-  
+
   componentDidMount() {
     if (this.state.id !== undefined) {
       axios
@@ -79,22 +82,40 @@ class ContactoForm extends React.Component {
     });
   }
 
+  editar() {
+    const apiUrl = `http://localhost:8080/contatos/${this.props.match.params.id}`;
+    fetch(apiUrl, {
+      method: "PUT",
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(this.state.contacto),
+    }).then((response) => {
+      console.log(response);
+      this.componentDidMount();
+      alert("contacto + " + this.state.contacto.nome + " atualizado com sucesso");
+    });
+  }
+
+  pegarContacto () {
+    axios
+    .get(`http://localhost:8080/contatos/${this.props.match.params.id}`, {
+      responseType: "json",
+    })
+    .then((response) => {
+     
+      return response.data;
+   
+    });
+  }
 
   render() {
+    console.log(this.pegarContacto()) 
+    var contacto =this.pegarContacto()
+    console.log(contacto)
     const button = [];
-    if (this.state.contacto) {
-      button.push(
-        <button
-          id="btn"
-          onClick={() => {
-            this.salvar();
-            this.props.history.push("/");
-          }}
-        >
-          Salvar
-        </button>
-      );
-    } else {
+     
       button.push(
         <button
           id="btn"
@@ -106,11 +127,11 @@ class ContactoForm extends React.Component {
           Editar
         </button>
       );
-    }
+    
 
     return (
       <div className="form-contacto">
-        <h2>Cadastro de contacto</h2>
+        <h2>Editar Contacto </h2>
         <LabelInput
           label="NOME:"
           corFundo="#DDDD00"
@@ -136,6 +157,4 @@ class ContactoForm extends React.Component {
   }
 }
 
-
-
-export default withRouter(ContactoForm);
+export default withRouter(Editar);

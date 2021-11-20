@@ -26,7 +26,19 @@ class Contactos extends React.Component {
   }
 
   editar() {
-    
+    const apiUrl = `http://localhost:8080/contatos/${this.state.contacto.id}`;
+    fetch(apiUrl, {
+      method: "PUT",
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(this.state.contacto),
+    }).then((response) => {
+      console.log(response);
+      this.componentDidMount();
+      alert("contacto + " + this.state.contacto.nome + " deletado com sucesso");
+    });
   }
 
   excluir(contacto) {

@@ -1,5 +1,6 @@
 import "./App.css";
 import Contactos from "./components/Contactos";
+
 import { Link } from "react-router-dom";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         Cadastrar Contacto
       </Link>
       <Contactos />
+     
     </div>
   );
 }
